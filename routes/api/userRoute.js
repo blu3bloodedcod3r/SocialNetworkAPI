@@ -13,11 +13,12 @@ const {
 router.route('/').get(getUsers)
 
 // /api/users/:userId
-router.route('/:userId').get(getSingleUser).findOneById('_id').get;
+router.route('/users/:userId').get(getSingleUser);
 
-router.route('/:userId/thoughts').PopulatedPaths(thoughtSchema);
+//get user by id and populate friends and thoughts data
+router.route('/:userId/thoughts').get(getSingleUser).populate()
 
-//create, upadte and delte user
+//create, upadte and delete user
 router.route('/users').post(createUser);
 router.route('/users/:userId').update(updateUser);
 router.route('/users/:userId').delete(deleteUser);

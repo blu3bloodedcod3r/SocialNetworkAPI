@@ -6,7 +6,7 @@ const friendCount = async () =>
     .count('friendCount')
     .then((numberOfFriends) => numberOfFriends);
 
-model.exports = {  
+module.exports = {  
     // Get all Users
     getUsers(req, res) {
       User.find()
