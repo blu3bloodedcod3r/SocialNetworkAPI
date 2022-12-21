@@ -1,9 +1,14 @@
 const router = require('express').Router();
-const thoughtSchema = require('../../models/thought');
-const User = require('../../models/user');
+const {
+    getThoughts,
+    getSingleThought,
+    createThought,
+    deleteThought,
+    updateThought
+} = require('../../controllers/thoughtController')
 
 // /api/thoughts
-router.route('/').get(Thought);
+router.route('/').get(getThoughts);
 
 //get single thought
 router.route('/thoughts/:thoughtId').get(getSingleThought);
