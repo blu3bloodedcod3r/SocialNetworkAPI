@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const Thought = require('../../models/thought');
+const friends = require('../../models/user');
 const {
     getUsers,
     getSingleUser, 
@@ -13,18 +15,22 @@ const {
 router.route('/').get(getUsers)
 
 // /api/users/:userId
-router.route('/users/:userId').get(getSingleUser);
+router.route('/users/:userId')
+    .get(getSingleUser)
+    .post(createUser)
+    .put(updateUser)
+    .delete(deleteUser);
 
 //get user by id and populate friends and thoughts data
-router.route('/:userId/thoughts').get(getSingleUser).populate()
-
-//create, upadte and delete user
-router.route('/users').post(createUser);
-router.route('/users/:userId').update(updateUser);
-router.route('/users/:userId').delete(deleteUser);
+router.route('/:userId/thoughts')
+    .get(getSingleUser)
+    .get(Thought)
+    .get(friends)
 
 // /api/users/:userId/friends/:friendId
-router.route('/api/users/:userId/friends/:friendId').post(addFriend);
-router.route('/api/users/:userId/friends/:friendId').delete(removeFriend);
+router.route('/api/users/:userId/friends/:friendId')
+    .get(friends)
+    .post(addFriend)
+    .delete(removeFriend);
 
 module.exports = router;
