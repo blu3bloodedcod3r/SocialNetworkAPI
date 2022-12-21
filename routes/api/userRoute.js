@@ -13,7 +13,7 @@ router.route('/users').post(newUser);
 router.route('/users/:userId').delete(removeUser);
 
 // /api/users/:userId/friends/:friendId
-
 router.route('/api/users/:userId/friends/:friendId').post(newFriend);
 router.route('/api/users/:userId/friends/:friendId').delete(removeFriend);
+
 module.exports = router;

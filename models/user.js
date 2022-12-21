@@ -1,5 +1,5 @@
-const { Schema, model} = require('mongoose');
-const thoughtSchema = require('./thought');
+const { Schema, model } = require('mongoose');
+const Thought = require('./thought');
 
 
 const userSchema = new Schema(
@@ -11,22 +11,26 @@ const userSchema = new Schema(
             trimmed: true
         },
         email: {
-            typre: String,
+            type: String,
             required: true,
             unique: true,
             vaildate: true
 
         },
         thoughts: {
-            type: String,
-            _id:  [{ref: thoughtSchema}]
+            type: Number,
+            _id:  [{ref: 'thought'}]
         },
         friends: {
-            type: String,
-            _id: [{reference:'user'}]
+            type: Number,
+            _id: [{ref:'user'}]
         }
     }
 );
+
+userSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
+})
 
 const User = model('user', userSchema);
 

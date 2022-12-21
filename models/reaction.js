@@ -1,32 +1,30 @@
-const { ObjectId } = require("bson");
 const { model, Schema } = require("mongoose");
+const User = require('./user');
 
-const reactionsSchema = new Schema(
+const reactionSchema = new Schema(
     {
         readtionId: {
-            type: ObjectId,
-            default: new ObjectId
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId()
         }
     },
     {
         reactionBody: {
             type: String,
             required: true,
-            validate: { max: 280}
+            validate: { max: 280 }
         }
     },
     { userName: {
             type: String,
-            required: true,
-            ref: [userSchema]
+            required: true
         }
     },
     {    createdAt: {
             type: Date,
             defaut: Date.now,
-            
         }
     }
 )
 
-model.exports = reactionsSchema;
+model.exports = reactionSchema;

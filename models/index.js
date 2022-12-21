@@ -3,4 +3,4 @@ const Thought = require('./thought');
 
 
 
-modeule.exports = { User, Thought };
+modeule.exports ={ User, Thought};
