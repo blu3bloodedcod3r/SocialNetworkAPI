@@ -19,14 +19,13 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
     // Create a thought
-    createThought(req, res) {
-      Thought.create(req.body)
+      createThought(req,res) {
+        Thought.create(req.body)
         .then((thought) => res.json(thought))
-        .catch((err) => {
-          console.log(err);
+        .catch(err => {
           return res.status(500).json(err);
-        });
-    },
+        })
+      },
     // Delete a thought
     deleteThought(req, res) {
       Thought.findOneAndDelete({ _id: req.params.thoughtId })
@@ -51,5 +50,13 @@ module.exports = {
             : res.json(thought)
         )
         .catch((err) => res.status(500).json(err));
-    }
+    },
+    //create reaction
+      createReaction(req,res) {
+        console.log(req.params.thoughtId)
+      },
+      deleteReaction(req,res) {
+        console.log(req.params.reactionId)
+        console.log(req.params.thoughtId)
+      }
   };

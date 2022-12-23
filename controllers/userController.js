@@ -6,6 +6,22 @@ const friendCount = async () =>
     .count('friendCount')
     .then((numberOfFriends) => numberOfFriends);
 
+const friendList = async (userId) =>
+User.aggregate([
+  {  
+    $match: { _id: ObjectId(userId) }
+  },
+  {
+    $unwind: '$thought',
+  },
+  {
+    $group: {
+      _id: ObjectId(userId),
+      friends: { $avg: '$assignments.score' }
+    }
+  },
+]);
+
 module.exports = {  
     // Get all Users
     getUsers(req, res) {
