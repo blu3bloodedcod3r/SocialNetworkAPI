@@ -6,21 +6,21 @@ const friendCount = async () =>
     .count('friendCount')
     .then((numberOfFriends) => numberOfFriends);
 
-const friendList = async (userId) =>
-User.aggregate([
-  {  
-    $match: { _id: ObjectId(userId) }
-  },
-  {
-    $unwind: '$thought',
-  },
-  {
-    $group: {
-      _id: ObjectId(userId),
-      friends: { $avg: '$assignments.score' }
-    }
-  },
-]);
+  const friendList = async (userId) =>
+  User.aggregate([
+    {  
+      $match: { _id: ObjectId(userId) }
+    },
+    {
+      $unwind: '$thought',
+    },
+    {
+      $group: {
+        _id: ObjectId(userId),
+        friends: { $avg: '$assignments.score' }
+      }
+    },
+  ]);
 
 module.exports = {  
     // Get all Users
@@ -64,7 +64,7 @@ module.exports = {
     },
     //update user by _id
     updateUser(req,res) {
-        User.update(req.params.userId)
+        User.findOneAndUpdate(req.params.userId)
         .then((user) => res.json(user))
         .catch(err => res.status(500).json(err));
     },
@@ -84,7 +84,21 @@ module.exports = {
           res.status(500).json(err);
         });
     },
-  
+    getFriends(req,res) {
+      User.find(
+        { _id: req.params.userId },
+        { $pull: { friends: { _id: req.params._id } } },
+        { runValidators: true, new: true }
+      )
+        .then((user) =>
+          !user
+            ? res
+                .status(404)
+                .json({ message: 'No user found with that ID :(' })
+            : res.json(user)
+        )
+        .catch((err) => res.status(500).json(err));
+    },
     // Add a friend to a user
     addFriend(req, res) {
       console.log('You are adding an friend');
@@ -105,7 +119,7 @@ module.exports = {
     },
     // Remove friend from a user
     removeFriend(req, res) {
-      User.findOneAndUpdate(
+      User.findOneAndRemove(
         { _id: req.params.userId },
         { $pull: { friends: { _id: req.params._id } } },
         { runValidators: true, new: true }
